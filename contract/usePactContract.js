@@ -1,0 +1,51 @@
+import useWeb3Context from "@/context/hooks/useWeb3Context";
+import PactABI from "./abi/Pact.json";
+import config from "@/config";
+import Eth from "web3-eth";
+import Web3 from "web3";
+
+export default function usePactContract() {
+  const { web3, account, sendTx } = useWeb3Context();
+  const eth = new Eth(
+    new Web3.providers.HttpProvider(config.provider, {
+      reconnect: {
+        auto: true,
+      },
+    })
+  );
+
+  return {
+    async resolved(pactAddress) {
+      const pactContract = new eth.Contract(PactABI, pactAddress);
+
+      return await pactContract.methods.resolved().call({ from: account });
+    },
+
+    async resolvable(pactAddress) {
+      const pactContract = new eth.Contract(PactABI, pactAddress);
+      return await pactContract.methods.resolvable().call({ from: account });
+    },
+
+    async balance(pactAddress) {
+      const balance = await eth.getBalance(pactAddress);
+
+      return web3.utils.fromWei(balance, "ether");
+    },
+
+    async commitment(pactAddress) {
+      const pactContract = new eth.Contract(PactABI, pactAddress);
+      return await pactContract.methods.commitment().call({ from: account });
+    },
+
+    async safeAddress(pactAddress) {
+      const pactContract = new eth.Contract(PactABI, pactAddress);
+      return await pactContract.methods.safe().call({ from: account });
+    },
+
+    async resolve(pactAddress) {
+      const contract = new web3.eth.Contract(PactABI, pactAddress);
+      const func = contract.methods.resolve();
+      return await sendTx(func);
+    },
+  };
+}
