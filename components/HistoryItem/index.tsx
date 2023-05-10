@@ -12,6 +12,8 @@ export default function HistoryItem({ item, onRefresh }: any) {
     onRefresh();
   };
 
+  
+
   // useEffect(() => {
   //   if (!address) {
   //     return;
