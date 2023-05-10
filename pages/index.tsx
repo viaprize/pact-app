@@ -1,6 +1,7 @@
 import type { NextPage } from "next";
 import useWeb3Context from "@/context/hooks/useWeb3Context";
 import AppHeader from "@/components/AppHeader";
+import { Multicall } from 'ethereum-multicall'
 import axios from "../lib/axios";
 import { LoadingOutlined } from "@ant-design/icons";
 import usePactFactory from "../contract/usePactFactory";
@@ -8,7 +9,6 @@ import usePactContract from "contract/usePactContract";
 import { DatePicker } from "antd";
 import cn from "classnames";
 import { useEffect, useState } from "react";
-// import Contribute from "@/components/Contribute";
 import HistoryItem from "@/components/HistoryItem";
 
 const tabs = ["about", "create", "preview"];
@@ -21,7 +21,7 @@ const Home: NextPage = () => {
   const [loading, setLoading] = useState(false);
   const [address, setAddress] = useState([""]);
   const [rawEndDate, setRawEndDate] = useState();
-  const [historyList, setHistoryList] = useState([{ foo: "bar" }]);
+  const [historyList, setHistoryList] = useState([]);
   const [activeTab, setActiveTab] = useState(tabs[0]);
   const [endDate, setEndDate] = useState("");
   const { account, connectWallet, web3 }: any = useWeb3Context();
@@ -93,7 +93,7 @@ const Home: NextPage = () => {
     }
     const res: any = await axios.get("/pacts");
     // get balances
-    for (let i = 2; i < res.length; i++) {
+    for (let i = 0; i < res.length; i++) {
       const pactAddress = res[i].address;
 
       res[i] = {

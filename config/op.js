@@ -1,5 +1,5 @@
 export default {
-  provider: "https://opt-mainnet.g.alchemy.com/v2/demo",
+  provider: "https://opt-mainnet.g.alchemy.com/v2/224qz7e8XHRyAkY6AXLYHhGB9cPxeuYG",
   chainId: 10,
   chainName: "Optimism",
   scanUrl: "https://optimistic.etherscan.io",
