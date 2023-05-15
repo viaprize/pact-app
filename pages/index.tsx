@@ -99,16 +99,8 @@ const Home: NextPage = () => {
       res[i] = {
         ...res[i],
         balance: web3.utils.fromWei(await web3.eth.getBalance(pactAddress)),
-        resolvable: await pactContract.resolvable(pactAddress),
-        resolved: await pactContract.resolved(pactAddress),
-        // safeAddress: await pactContract.safeAddress(pactAddress),
+        ...await pactContract.getPactInfo(pactAddress)
       };
-
-      if(res[i].resolvable && !res[i].resolved){
-        res[i].safeAddress = await pactContract.safeAddress(pactAddress)
-      }
-      // check if reached
-      console.log("b", res[i], res[i].safeAddress);
     }
     setHistoryList(res);
     setLoading(false);

@@ -1,5 +1,6 @@
 import useWeb3Context from "@/context/hooks/useWeb3Context";
 import PactABI from "./abi/Pact.json";
+import MulticallABI from "./abi/Multicall.json";
 import config from "@/config";
 import Eth from "web3-eth";
 import Web3 from "web3";
@@ -46,6 +47,29 @@ export default function usePactContract() {
       const contract = new web3.eth.Contract(PactABI, pactAddress);
       const func = contract.methods.resolve();
       return await sendTx(func);
+    },
+
+    async getPactInfo(pactAddress) {
+      const multicall = new web3.eth.Contract(
+        MulticallABI,
+        config.contracts.multicall3
+      );
+
+      const pactContract = new web3.eth.Contract(PactABI, pactAddress);
+
+      const calls = [
+        [pactAddress, pactContract.methods.safe().encodeABI()],
+        [pactAddress, pactContract.methods.resolved().encodeABI()],
+        [pactAddress, pactContract.methods.resolvable().encodeABI()],
+      ];
+
+      const res = await multicall.methods.aggregate(calls).call();
+
+      return {
+        safe: web3.eth.abi.decodeParameter("address", res['returnData'][0]),
+        resolved: web3.eth.abi.decodeParameter("bool", res['returnData'][1]),
+        resolvable: web3.eth.abi.decodeParameter("bool", res['returnData'][2]),
+      }
     },
   };
 }

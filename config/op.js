@@ -4,6 +4,7 @@ export default {
   chainName: "Optimism",
   scanUrl: "https://optimistic.etherscan.io",
   contracts: {
+    multicall3: "0xcA11bde05977b3631167028862bE2a173976CA11",
     pactFactory: "0x642a7864cBe44ED24D408Cbc38117Cfd6E6D1a95",
   },
   eventSignatures: {
