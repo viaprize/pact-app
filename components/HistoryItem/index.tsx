@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import Contribute from "../Contribute";
 import usePactContract from "contract/usePactContract";
 import config from "@/config";
-
 export default function HistoryItem({ item, onRefresh }: any) {
   // const getDetail = async () => {};
   const pactContract = usePactContract();
@@ -11,8 +10,21 @@ export default function HistoryItem({ item, onRefresh }: any) {
     await pactContract.resolve(item.address);
     onRefresh();
   };
+  const copyToClipboard = async (address: string) => {
+    navigator.clipboard.writeText(
+      `<iframe
+        width="290"
+        height="650px"
+        
+        src="https://pact-ruddy.vercel.app/pacts/preview/${address}"
+        frameborder="0"
+        scrolling="no"
+      ></iframe>`
+    )
+    alert("Iframe Copied")
+  }
 
-  
+
 
   // useEffect(() => {
   //   if (!address) {
@@ -23,6 +35,7 @@ export default function HistoryItem({ item, onRefresh }: any) {
   return (
     <div className="card bg-base-100 shadow-xl mb-4">
       <div className="card-body break-words">
+
         <div className="card-title break-words">{item.name}</div>
         <div className="mt-1">Terms: {item.terms}</div>
         <div className="mt-1">Balance: {item.balance} ETH</div>
@@ -62,11 +75,13 @@ export default function HistoryItem({ item, onRefresh }: any) {
           <button className="btn btn-success text-white mt-2">Resolved</button>
         )}
 
+
         {!item.resolvable && !item.resolved && (
           <div>
             <Contribute address={item.address} onContributed={onRefresh} />
           </div>
         )}
+        <button className="btn btn-info w-1/2 float-right btn-sm" onClick={() => copyToClipboard(item.address)}>Share Using Iframe</button>
       </div>
     </div>
   );
