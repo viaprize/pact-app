@@ -21,7 +21,7 @@ const Home: NextPage = () => {
   const [loading, setLoading] = useState(false);
   const [address, setAddress] = useState([""]);
   const [rawEndDate, setRawEndDate] = useState();
-  const [historyList, setHistoryList] = useState([]);
+  const [historyList, setHistoryList] = useState<History[]>([]);
   const [activeTab, setActiveTab] = useState(tabs[0]);
   const [endDate, setEndDate] = useState("");
   const { account, connectWallet, web3 }: any = useWeb3Context();
@@ -80,6 +80,7 @@ const Home: NextPage = () => {
     const timestamp = val.unix();
     setEndDate(timestamp);
   };
+  console.log({ historyList })
 
   useEffect(() => {
     if (!account) {
