@@ -66,10 +66,10 @@ export default function usePactContract() {
       const res = await multicall.methods.aggregate(calls).call();
 
       return {
-        safe: web3.eth.abi.decodeParameter("address", res['returnData'][0]),
-        resolved: web3.eth.abi.decodeParameter("bool", res['returnData'][1]),
-        resolvable: web3.eth.abi.decodeParameter("bool", res['returnData'][2]),
-      }
+        safe: web3.eth.abi.decodeParameter("address", res["returnData"][0]),
+        resolved: web3.eth.abi.decodeParameter("bool", res["returnData"][1]),
+        resolvable: web3.eth.abi.decodeParameter("bool", res["returnData"][2]),
+      };
     },
   };
 }
